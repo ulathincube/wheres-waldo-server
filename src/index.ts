@@ -1,6 +1,7 @@
 import app from "./app.js"
+import { PORT } from "./utils/constansts.js"
 
-app.listen(5000, (error: any) => {
+app.listen(PORT, (error: unknown) => {
   if (error) throw error
-  else console.log("--Server running--")
+  console.log(`--Server running on PORT ${PORT}--`)
 })
