@@ -11,6 +11,8 @@
     "target": "esnext",
     "types": ["node"],
     "lib": ["esnext"],
+    "ignoreDeprecations": "6.0",
+
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],

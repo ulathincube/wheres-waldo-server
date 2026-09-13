@@ -1,0 +1,26 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Character {
+  id Int @id @default(autoincrement())
+  name String
+  wallpaper Wallpaper @relation(fields: [wallpaperId], references: [id])
+  wallpaperId Int
+  position_x Int
+  position_y Int
+}
+
+model Wallpaper {
+  id Int @id @default(autoincrement())
+  name String
+  characters Character[]
+}
+
+
