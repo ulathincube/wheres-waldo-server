@@ -1,11 +1,23 @@
-import type { Request, Response } from "express"
+import type { Request, Response, NextFunction } from "express"
 import { stopTimer, startTimer, counter } from "../utils/timer.js"
 import { createNumberRange, checkIfInRange } from "../checkRange.js"
+import { getWallpaper } from "../models/wallpaper.js"
 
-export function getWallpaper(req: Request, res: Response) {
-  startTimer()
-  console.log({ counterWallpaper: counter })
-  res.status(200).json({ data: "", message: "Getting Wallpaper!" })
+export async function getWallpaperController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const wallpaper = await getWallpaper()
+    startTimer()
+
+    res
+      .status(200)
+      .json({ data: wallpaper, message: "Getting Wallpaper!", error: null })
+  } catch (error: unknown) {
+    next(error)
+  }
 }
 
 export function findSpecificCharacter(req: Request, res: Response) {

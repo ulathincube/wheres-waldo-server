@@ -1,11 +1,11 @@
 import { Router } from "express"
 import {
   findSpecificCharacter,
-  getWallpaper,
+  getWallpaperController,
 } from "../controllers/wallpaper.js"
 const router = Router()
 
-router.get("/", getWallpaper)
+router.get("/", getWallpaperController)
 router.post("/:wallpaperId/:characterId", findSpecificCharacter)
 
 export default router
