@@ -9,16 +9,19 @@ datasource db {
 }
 
 model Character {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   name String
+  url String
+  position_x Float
+  position_y Float
   wallpaper Wallpaper @relation(fields: [wallpaperId], references: [id])
-  wallpaperId Int
-  position_x Int
-  position_y Int
+  wallpaperId String
+  
 }
 
 model Wallpaper {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
+  url String
   name String
   characters Character[]
 }

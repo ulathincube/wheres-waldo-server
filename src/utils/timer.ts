@@ -1,13 +1,15 @@
-let intervalId: any = null
+let intervalId: NodeJS.Timeout
 
+let counter = 0
 export function startTimer() {
-  let counter = 0
   intervalId = setInterval(() => {
     counter += 1
-    console.log({ counter })
+    // console.log({ counter })
   }, 1000)
 }
 
 export function stopTimer() {
   clearInterval(intervalId)
 }
+
+export { counter }
