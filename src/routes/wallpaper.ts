@@ -2,18 +2,15 @@ import { Router } from "express"
 import {
   findSpecificCharacter,
   getWallpaperController,
+  completeGame,
 } from "../controllers/wallpaper.js"
-import { param, body } from "express-validator"
 
 const router = Router()
 
 router.get("/", getWallpaperController)
-router.post(
-  "/:wallpaperId/:characterId",
-  body("position").notEmpty(),
-  param("wallpaperId").trim().notEmpty(),
-  param("characterId").trim().notEmpty(),
-  findSpecificCharacter
-)
+
+router.post("/:wallpaperId/complete", completeGame)
+
+router.post("/:wallpaperId/:characterId", findSpecificCharacter)
 
 export default router

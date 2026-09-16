@@ -10,7 +10,11 @@ import {
   findCharacter,
   findWallpaper,
 } from "../models/wallpaper.js"
-import { WallpaperParams, WallpaperBody } from "../utils/validation.js"
+import {
+  WallpaperParams,
+  WallpaperBody,
+  WallpaperIdParam,
+} from "../utils/validation.js"
 
 export async function getWallpaperController(
   req: Request,
@@ -59,7 +63,6 @@ export async function findSpecificCharacter(
     checkIfInRange(xRange, character.position_x) &&
     checkIfInRange(yRange, character.position_y)
   ) {
-    stopTimer()
     res
       .status(200)
       .json({ message: "Waldo found!", data: true, counter, error: null })
@@ -67,5 +70,26 @@ export async function findSpecificCharacter(
     res
       .status(200)
       .json({ message: "Keep looking!", data: false, counter, error: null })
+  }
+}
+
+export async function completeGame(
+  req: Request,
+  res: Response
+  // next: NextFunction
+) {
+  const { wallpaperId } = WallpaperIdParam.parse(req.params)
+  const wallpaper = await findWallpaper(wallpaperId)
+  if (!wallpaper)
+    return res.status(404).json({
+      message: "Unable to locate this file",
+      data: wallpaperId,
+      error: null,
+    })
+  else {
+    res
+      .status(200)
+      .json({ data: "", message: "Game complete", error: null, counter })
+    stopTimer()
   }
 }

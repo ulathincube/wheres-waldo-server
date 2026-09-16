@@ -11,3 +11,11 @@ export const WallpaperBody = z.object({
     y: z.float32(),
   }),
 })
+
+export const CharacterIdParam = z.object({
+  characterId: z.string(),
+})
+
+export const WallpaperIdParam = z.object({
+  wallpaperId: z.string(),
+})
