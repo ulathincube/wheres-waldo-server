@@ -1,7 +1,16 @@
 import type { Request, Response, NextFunction } from "express"
 import { stopTimer, startTimer, counter } from "../utils/timer.js"
-import { createNumberRange, checkIfInRange } from "../checkRange.js"
-import { getWallpaper } from "../models/wallpaper.js"
+import {
+  createNumberRangeX,
+  createNumberRangeY,
+  checkIfInRange,
+} from "../utils/checkRange.js"
+import {
+  getWallpaper,
+  findCharacter,
+  findWallpaper,
+} from "../models/wallpaper.js"
+import { WallpaperParams, WallpaperBody } from "../utils/validation.js"
 
 export async function getWallpaperController(
   req: Request,
@@ -12,55 +21,51 @@ export async function getWallpaperController(
     const wallpaper = await getWallpaper()
     startTimer()
 
-    res
-      .status(200)
-      .json({ data: wallpaper, message: "Getting Wallpaper!", error: null })
+    res.status(200).json({
+      data: wallpaper,
+      message: "Getting Wallpaper!",
+      error: null,
+      counter,
+    })
   } catch (error: unknown) {
     next(error)
   }
 }
 
-export function findSpecificCharacter(req: Request, res: Response) {
+export async function findSpecificCharacter(
+  req: Request,
+  res: Response
+  // next: NextFunction
+) {
   // query? param ? body?
   // waldo => x500 y378
-  // position / width => position / height
+  // position / width => position / heig
 
-  const positions = {
-    yellow: {
-      x: 0.5,
-      y: 0.5,
-    },
-    blue: {
-      x: 0.88,
-      y: 0.86,
-    },
-    red: {
-      x: 0.61,
-      y: 0.66,
-    },
-  }
+  const { wallpaperId, characterId } = WallpaperParams.parse(req.params)
+  const { position } = WallpaperBody.parse(req.body)
 
-  const imageWidth = 1920
-  const imageHeight = 1080
-  const positionWaldo = { x: 0.5, y: 0.5 }
-  const { wallpaperId, characterId } = req.params
-  const { position } = req.body
+  const wallpaper = await findWallpaper(wallpaperId)
+  const character = await findCharacter(characterId)
 
-  console.log({ characterId, wallpaperId, position, counter })
-  // -25 <= x & y >= 25
+  if (!wallpaper || !character)
+    throw new Error("Unable to locate resources: wallpaper and character!")
 
-  const xRange = createNumberRange(position.x, imageWidth)
-  const yRange = createNumberRange(position.y, imageHeight)
+  const xRange = createNumberRangeX(position.x)
+  const yRange = createNumberRangeY(position.y)
 
-  console.log({ xRange, yRange })
+  console.log({ xRange, yRange, x: position.x, y: position.y })
 
   if (
-    checkIfInRange(xRange, positionWaldo.x) &&
-    checkIfInRange(yRange, positionWaldo.y)
+    checkIfInRange(xRange, character.position_x) &&
+    checkIfInRange(yRange, character.position_y)
   ) {
     stopTimer()
-    res.status(200).json({ message: "Waldo found!", data: true, counter })
+    res
+      .status(200)
+      .json({ message: "Waldo found!", data: true, counter, error: null })
   } else {
-    res.status(200).json({ message: "Keep looking!", data: false, counter })
+    res
+      .status(200)
+      .json({ message: "Keep looking!", data: false, counter, error: null })
   }
 }
