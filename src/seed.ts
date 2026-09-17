@@ -30,7 +30,7 @@ async function seedDB() {
         },
       },
     })
-    console.log({ response })
+
     return response
   } catch (error: unknown) {
     if (error instanceof Error) throw error

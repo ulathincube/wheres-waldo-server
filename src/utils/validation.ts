@@ -19,3 +19,11 @@ export const CharacterIdParam = z.object({
 export const WallpaperIdParam = z.object({
   wallpaperId: z.string(),
 })
+
+export const CompletionTimeBody = z.object({
+  completionTime: z.number(),
+})
+
+export const SaveUser = z.object({
+  username: z.string(),
+})

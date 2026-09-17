@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -9,21 +8,24 @@ datasource db {
 }
 
 model Character {
-  id String @id @default(uuid())
-  name String
-  url String
-  position_x Float
-  position_y Float
-  wallpaper Wallpaper @relation(fields: [wallpaperId], references: [id])
+  id          String    @id @default(uuid())
+  name        String
+  url         String
+  position_x  Float
+  position_y  Float
+  wallpaper   Wallpaper @relation(fields: [wallpaperId], references: [id])
   wallpaperId String
-  
 }
 
 model Wallpaper {
-  id String @id @default(uuid())
-  url String
-  name String
+  id         String      @id @default(uuid())
+  url        String
+  name       String
   characters Character[]
 }
 
-
+model User {
+  id       String @id @default(uuid())
+  username String
+  time     Int
+}

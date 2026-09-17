@@ -4,10 +4,11 @@ import {
   getWallpaperController,
   completeGame,
 } from "../controllers/wallpaper.js"
+import { startTimer } from "../middlewares/startTimer.js"
 
 const router = Router()
 
-router.get("/", getWallpaperController)
+router.get("/", startTimer, getWallpaperController)
 
 router.post("/:wallpaperId/complete", completeGame)
 
